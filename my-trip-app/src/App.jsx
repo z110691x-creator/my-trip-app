@@ -10,65 +10,6 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const DOC_REF = doc(db, 'trips', 'main');
 
-const DAY4 = {
-  id: 'd4_jungfrau',
-  date: '2026-06-08',
-  title: 'Day 4',
-  dayTheme: '少女峰登頂 ＋ 瀑布小鎮與懸崖村健行',
-  events: [
-    {
-      id: 'e4_1', time: '08:14', title: '搭車上少女峰',
-      subtitle: 'Grindelwald → Jungfraujoch Top of Europe',
-      location: 'Grindelwald',
-      note: '❶ 艾格快線 Eiger Express\nGrindelwald Terminal → Eigergletscher（約 15 分鐘）\n\n❷ 少女峰登山鐵路 Jungfrau Railway\nEigergletscher → Jungfraujoch（約 26 分鐘，紅色齒軌列車）',
-      businessHours: '', ticket: ''
-    },
-    {
-      id: 'e4_2', time: '', title: '少女峰頂景點巡遊',
-      subtitle: 'Top of Europe 3,454m',
-      location: 'Jungfraujoch',
-      note: '❶ 斯芬克斯觀景台 Sphinx Observatorium — 搭高速電梯，途經少女峰全景體驗 360° 影片\n❷ 嬉雪樂園 Snow Fun Park — 11:00-16:00，套票 CHF 50 / 單項 CHF 20\n❸ 阿萊奇冰川 Aletsch Glacier — ⚠️ 請勿離開標記步道\n❹ 阿爾卑斯山震撼體驗館 Alpine Sensation（斯芬克斯→冰宮連接通道）\n❺ 冰宮 Ice Palace\n❻ 普拉特展望台 Plateau — 瑞士國旗地標\n\n📮 明信片：Top of Europe 商店購票，使用最高郵筒，蓋 Jungfraujoch 專屬郵戳\n🔖 護照蓋章：大廳旅遊櫃台旁自助蓋章台',
-      businessHours: 'Snow Fun Park 11:00 – 16:00',
-      ticket: 'Snow Fun CHF 50（套票）'
-    },
-    {
-      id: 'e4_3', time: '12:15', title: '下山前往勞特布龍嫩',
-      subtitle: 'Jungfraujoch → Lauterbrunnen',
-      location: 'Kleine Scheidegg',
-      note: '❶ 少女峰頂 → 小夏戴克 Kleine Scheidegg（約 35 分，紅色齒軌火車）\n❷ 小夏戴克 → 勞特布龍嫩 Lauterbrunnen（約 45 分，黃綠 WAB 火車，坐左側窗邊）\n\n⚠️ 小夏戴克是唯一分流點，請確認月台往「Lauterbrunnen」方向',
-      businessHours: '', ticket: ''
-    },
-    {
-      id: 'e4_4', time: '', title: '特呂默爾河瀑布 Trümmelbachfälle',
-      subtitle: '世界級洞穴瀑布',
-      location: 'Lauterbrunnen',
-      note: '搭 141 巴士約 7 分鐘｜世界上唯一可進入的冰蝕洞穴瀑布\n⚠️ 任何 Pass 均無折扣\n建議停留 1 小時，17:00 關門',
-      businessHours: '關門 17:00', ticket: 'CHF 16（無 Pass 折扣）'
-    },
-    {
-      id: 'e4_5', time: '', title: '穆倫瀑布 Mürrenbach Falls ＋ 纜車上山',
-      subtitle: 'Stechelberg → Mürren',
-      location: 'Stechelberg',
-      note: '搭 141 巴士至終點站 Stechelberg, Schilthornbahn\n下車即達，瀑布在纜車站後方山壁\n\n纜車：Stechelberg → Mürren（途經 Gimmelwald 請勿下車，直坐到第二站 Mürren）',
-      businessHours: '', ticket: '半價 CHF 10（Swiss Travel Pass 50% 折扣）'
-    },
-    {
-      id: 'e4_6', time: '', title: 'Mürren ＆ Gimmelwald 健行',
-      subtitle: '懸崖村漫步',
-      location: 'Mürren',
-      note: '❶ 🌷 鮮花谷 — Allmendhubel 地面纜車（Swiss Travel Pass 50% 折扣）\n❷ 🪵 斷木地景\n\n下坡健行：Mürren → Gimmelwald（吉梅爾瓦爾德）\n🏠 特別景點：誠實商店\n\n纜車下山：Gimmelwald → Stechelberg',
-      businessHours: '', ticket: 'Allmendhubel 纜車 STP 50% 折扣'
-    },
-    {
-      id: 'e4_7', time: '', title: '施陶河瀑 Staubbachfall ＋ 返回格林德瓦',
-      subtitle: 'Lauterbrunnen → Grindelwald',
-      location: 'Lauterbrunnen',
-      note: '搭 141 巴士在 Lauterbrunnen, Kirche（教堂站）下車\n沿主街漫步 10 分鐘回火車站，欣賞施陶河瀑\n\n返程：Lauterbrunnen → Zweilütschinen → Grindelwald\n⚠️ Zweilütschinen 換車請確認往「Grindelwald」方向，切勿誤搭往 Interlaken！',
-      businessHours: '', ticket: ''
-    }
-  ]
-};
-
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('home'); 
@@ -138,11 +79,7 @@ const App = () => {
         const snap = await getDoc(DOC_REF);
         if (snap.exists()) {
           const data = snap.data();
-          if (data.days) {
-            const loadedDays = data.days;
-            const hasDay4 = loadedDays.some(d => d.id === 'd4_jungfrau');
-            setDays(hasDay4 ? loadedDays : [...loadedDays, DAY4]);
-          }
+          if (data.days) setDays(data.days);
           if (data.prepItems) setPrepItems(data.prepItems);
           if (data.tickets) setTickets(data.tickets);
           if (data.accommodations) setAccommodations(data.accommodations);
